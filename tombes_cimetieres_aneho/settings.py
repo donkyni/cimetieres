@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'cimetieres.app.CimetieresConfig',
+    'cimetieres.apps.CimetieresConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -130,7 +130,7 @@ STATICFILES_DIR = (
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_URL = 'fichier_static'
+MEDIA_URL = '/fichier_static/'
 MEDIA_ROOT = (
     BASE_DIR / 'fichier_static'
 )
