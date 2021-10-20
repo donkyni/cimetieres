@@ -1,0 +1,19 @@
+{% for dimension in dimensions %}
+<tr>
+    <th scope="row"><span class="badge badge-secondary">{{dimension.id}}</span></th>
+    <th scope="row">{{dimension.nom_dimension}}</th>
+    <th scope="row">{{dimension.date_creation_dimension}}</th>
+    <td scope="row">
+        <button class="btn btn-circle btn-info btn-sm show-form-update" data-url="{% url 'modifierdimension' dimension.id %}">
+            <i class="fas fa-pencil-alt"></i>
+        </button>
+        <button class="btn btn-circle btn-danger btn-sm show-form-delete" data-url="{% url 'supprimerdimension' dimension.id %}">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4" style="text-align:center;font-weight:bold">Aucune dimension n'est disponible pour le moment</td>
+</tr>
+{% endfor %}

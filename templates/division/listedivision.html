@@ -1,0 +1,19 @@
+{% for division in divisions %}
+<tr>
+    <th scope="row"><span class="badge badge-secondary">{{division.id}}</span></th>
+    <th scope="row">{{division.nom_division}}</th>
+    <th scope="row">{{division.date_de_creation_division}}</th>
+    <td scope="row">
+        <button class="btn btn-circle btn-info btn-sm show-form-update" data-url="{% url 'modifierdivision' division.id %}">
+            <i class="fas fa-pencil-alt"></i>
+        </button>
+        <button class="btn btn-circle btn-danger btn-sm show-form-delete" data-url="{% url 'supprimerdivision' division.id %}">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="4" style="text-align:center;font-weight:bold">Aucune division n'est disponible pour le moment</td>
+</tr>
+{% endfor %}

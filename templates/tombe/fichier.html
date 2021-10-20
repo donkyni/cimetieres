@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block link %}
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+{% endblock %}
+
+{% block active-tombe %} active {% endblock %}
+
+{% block collapsed-tombe %} {% endblock %}
+
+{% block show-tombe %} show {% endblock %}
+
+{% block active-fichier %} active {% endblock %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class=" mb-4">
+        <div class="col-lg-12 alert alert-secondary">
+            <h1 class="h5 mb-0 text-gray-800"><span style="color:#4e73df">Tableau de bord / </span>Fichier d'adressage des tombes du cimétière d'Aného actualisé</h1>
+        </div><br>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Rechercher des informations" id="myInputTextField">
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4 py-3 border-bottom-primary">
+                <div class="card-header text-center"><small style="font-size:15px"><b>Fichier d'adressage des tombes du cimétière d'Aného actualisé</b></small></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th scope="col" width="10%">Divison</th>
+                                <th scope="col" width="10%">Cadastre</th>
+                                <th scope="col" width="10%">Emplacement</th>
+                                <th scope="col" width="20%">Nom du defunt</th>
+                                <th scope="col" width="10%">Naissance</th>
+                                <th scope="col" width="10%">Décès</th>
+                                <th scope="col" width="10%">Âge</th>
+                                <th scope="col" width="10%">Dimension</th>
+                                <th scope="col" width="10%">Observation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for tombe in tombes %}
+                            <tr>
+                                <td width="10%" scope="row"><span class="badge badge-secondary">{{tombe.division}}</span></td>
+                                <td width="10%" scope="row"><span class="">{{tombe.cadastre_tombe}}</span></td>
+                                <td width="10%" scope="row"><span class="">{{tombe.emplacement_tombe}}</span></td>
+                                <td width="20%" scope="row"><span class="">{{tombe.nom_defunt_tombe}}</span></td>
+                                <td width="10%" scope="row"><span class="">{{tombe.naissance_defunt_tombe}}</span></td>
+                                <td width="10%" scope="row"><span class="">{{tombe.deces_defunt_tombe}}</span></td>
+                                <td width="10%" scope="row"><span class="">{{tombe.age_defunt_tombe}}</span></td>
+                                <td width="10%" scope="row"><span class="">{{tombe.dimension}}</span></td>
+                                <td width="10%" scope="row"><span class="">{{tombe.observation}}</span></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="9" style="text-align:center;font-weight:bold">Aucune donnée n'est disponible pour le moment</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <!-- Popup ajouter nouvelle categorie -->
+                        <div class="modal fade" id="modal-observation">
+                            <div class="modal-dialog">
+                                <div class="modal-content"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+        <div class="col-lg-6">
+            <div class="card mb-4 py-3 border-bottom-primary">
+                <div class="card-body">
+                    <div class="col-12">
+                        <div class="card shadow mb-4">
+                            <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Total décès par tranche d'âge</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
+                                        <div class="dropdown-header">Dropdown Header:</div>
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-pie pt-4 pb-2">
+                                    <canvas id="myPieChart"></canvas>
+                                </div>
+                                <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> Direct
+                                        </span>
+                                    <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Social
+                                        </span>
+                                    <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> Referral
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+<script src="{% static 'js/cimetiere/search.js' %}"></script>
+<script>
+    oTable = $('#dataTable').DataTable();
+    $('#myInputTextField').keyup(function(){
+          oTable.search($(this).val()).draw() ;
+    })
+</script>
+{% endblock %}

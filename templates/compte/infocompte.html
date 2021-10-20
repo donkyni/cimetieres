@@ -1,0 +1,9 @@
+{% load crispy_forms_tags %}
+<form class="form-horizontal" data-url="{% url 'compte' %}" method="POST" action="" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{u_form|crispy}}
+  <hr>
+  <div class="social-auth-links text-center mb-3">
+    <input class="btn btn-block btn-primary" type="submit" value="Modifier vos informations de compte">
+  </div>
+</form>
