@@ -26,4 +26,12 @@ urlpatterns = [
     url(r'^(?P<id>\d+)/updateutilisateur', views.updateutilisateur, name="updateutilisateur"),
     url(r'^(?P<id>\d+)/deleteutilisateur', views.deleteutilisateur, name="deleteutilisateur"),
     url(r'^(?P<id>\d+)/activeutilisateur', views.activeutilisateur, name="activeutilisateur"),
+    url(r'^profil', views.profil, name='profil'),
+    url(r'^createprofil', views.createprofil, name='createprofil'),
+    url(r'^(?P<id>\d+)/updateprofil', views.updateprofil, name="updateprofil"),
+    url(r'^(?P<id>\d+)/deleteprofil', views.deleteprofil, name="deleteprofil"),
+    url(r'^droit', views.droit, name='droit'),
+    url(r'^createdroit', views.createdroit, name='createdroit'),
+    url(r'^(?P<id>\d+)/updatedroit', views.updatedroit, name="updatedroit"),
+    url(r'^(?P<id>\d+)/deletedroit', views.deletedroit, name="deletedroit"),
 ]

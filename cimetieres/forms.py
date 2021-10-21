@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import ugettext_lazy as _
 
-from cimetieres.models import Division, Dimension, Observation, Tombe, User
+from cimetieres.models import Division, Dimension, Observation, Tombe, User, Profils, Droits
 
 
 class DateInput(forms.DateInput):
@@ -120,3 +120,27 @@ class UserUpdateForm(forms.ModelForm):
         fields = (
             'nom', 'prenom', 'adresse', 'telephone', 'sexe', 'avatar'
         )
+
+
+class ProfilsForm(forms.ModelForm):
+    class Meta:
+        model = Profils
+        fields = ('nom',)
+        labels = {
+            'nom': _('Nom du profil')
+        }
+        widgets = {
+            'nom': forms.TextInput(attrs={'class': 'form-control'})
+        }
+
+
+class DroitsForm(forms.ModelForm):
+    class Meta:
+        model = Droits
+        fields = ('nom',)
+        labels = {
+            'nom': _('Nom du droit')
+        }
+        widgets = {
+            'nom': forms.TextInput(attrs={'class': 'form-control'})
+        }

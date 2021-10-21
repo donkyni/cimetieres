@@ -2,15 +2,34 @@ import json
 from datetime import datetime
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 
 from cimetieres.forms import DivisionForm, DimensionForm, ObservationForm, TombeForm, UserUpdateForm, UserCreationForm, \
-    UserForm
-from cimetieres.models import Division, Dimension, Observation, Tombe, User
+    UserForm, ProfilsForm, DroitsForm
+from cimetieres.models import Division, Dimension, Observation, Tombe, User, Profils, Droits, DroitsProfils
 
 
+def controllers(request, url, droit, context):
+    user_profil = request.user.profil
+    dict = {}
+    if user_profil:
+        profils = get_object_or_404(Profils, nom=user_profil)
+        droits = get_object_or_404(Droits, nom=droit)
+        if profils:
+            permissions = DroitsProfils.objects.filter(profil=profils, droit=droits)
+            dict[profils] = permissions
+            for permission in permissions:
+                if permission.lecture:
+                    print(permission)
+                    return render(request, url, context)
+                else:
+                    return render(request, 'access_denied.html')
+
+
+@login_required
 def save_all(request, form, template_name, model, template_name2, mycontext):
     data = dict()
     if request.method == 'POST':
@@ -35,6 +54,16 @@ def save_all(request, form, template_name, model, template_name2, mycontext):
                 systeme.save()
                 data['form_is_valid'] = True
                 data[model] = render_to_string(template_name2, mycontext)
+            if model == "profil":
+                systeme = form.save(commit=False)
+                systeme.save()
+                data['form_is_valid'] = True
+                data[model] = render_to_string(template_name2, mycontext)
+            if model == "droit":
+                systeme = form.save(commit=False)
+                systeme.save()
+                data['form_is_valid'] = True
+                data[model] = render_to_string(template_name2, mycontext)
         else:
             data['form_is_valid'] = False
 
@@ -45,6 +74,7 @@ def save_all(request, form, template_name, model, template_name2, mycontext):
     return JsonResponse(data)
 
 
+@login_required
 def dashboard(request):
     count_deces = Tombe.objects.filter(archive_tombe=False).count()
     caveau_enfant = Tombe.objects.filter(dimension="Caveau Enfant", archive_tombe=False).count()
@@ -63,6 +93,7 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', context)
 
 
+@login_required
 def division(request):
     divisions = Division.objects.filter(archive_division=False)
 
@@ -97,6 +128,7 @@ def modifierdivision(request, id):
                     mycontext)
 
 
+@login_required
 def supprimerdivision(request, id):
     data = dict()
     division = get_object_or_404(Division, id=id)
@@ -115,6 +147,7 @@ def supprimerdivision(request, id):
     return JsonResponse(data)
 
 
+@login_required
 def dimension(request):
     dimensions = Dimension.objects.filter(archive_dimension=False)
 
@@ -150,6 +183,7 @@ def modifierdimension(request, id):
                     'dimension/listedimension.html', mycontext)
 
 
+@login_required
 def supprimerdimension(request, id):
     data = dict()
     dimension = get_object_or_404(Dimension, id=id)
@@ -168,6 +202,7 @@ def supprimerdimension(request, id):
     return JsonResponse(data)
 
 
+@login_required
 def observation(request):
     observations = Observation.objects.filter(archive_observation=False)
 
@@ -205,6 +240,7 @@ def modifierobservation(request, id):
                     'observation/listeobservation.html', mycontext)
 
 
+@login_required
 def supprimerobservation(request, id):
     data = dict()
     observation = get_object_or_404(Observation, id=id)
@@ -223,7 +259,10 @@ def supprimerobservation(request, id):
     return JsonResponse(data)
 
 
+@login_required
 def ligne(request):
+    droitprofil = "Tombe"
+
     if request.method == 'POST':
         form = TombeForm(request.POST)
         if form.is_valid():
@@ -235,9 +274,10 @@ def ligne(request):
     context = {
         'form': form
     }
-    return render(request, 'tombe/ligne.html', locals())
+    return controllers(request, 'tombe/ligne.html', droitprofil, locals())
 
 
+@login_required
 def fichier(request):
     tombes = Tombe.objects.filter(archive_tombe=False)
 
@@ -247,6 +287,7 @@ def fichier(request):
     return render(request, 'tombe/fichier.html', locals())
 
 
+@login_required
 def compte(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST,
@@ -264,12 +305,14 @@ def compte(request):
     return render(request, 'compte/moncompte.html', context)
 
 
+@login_required
 def utilisateurs(request):
+    droitprofil = "Utilisateur"
     utilisateurs = User.objects.all()
     context = {
         'utilisateurs': utilisateurs
     }
-    return render(request, 'compte/utilisateurs.html', context)
+    return controllers(request, 'compte/utilisateurs.html', droitprofil, context)
 
 
 def createutilisateur(request):
@@ -299,6 +342,7 @@ def updateutilisateur(request, id):
                     'utilisateur', 'compte/listutilisateur.html', mycontext)
 
 
+@login_required
 def deleteutilisateur(request, id):
     data = dict()
     utilisateur = get_object_or_404(User, id=id)
@@ -318,6 +362,7 @@ def deleteutilisateur(request, id):
     return JsonResponse(data)
 
 
+@login_required
 def activeutilisateur(request, id):
     data = dict()
     utilisateur = get_object_or_404(User, id=id)
@@ -333,5 +378,119 @@ def activeutilisateur(request, id):
             'utilisateur': utilisateur
         }
         data['html_form'] = render_to_string('compte/activeutilisateur.html', context, request=request)
+
+    return JsonResponse(data)
+
+
+@login_required
+def profil(request):
+    droitprofil = "Profil"
+    profils = Profils.objects.filter(archive=False)
+    context = {
+        'profils': profils
+    }
+    return controllers(request, 'profil/profil.html', droitprofil, context)
+
+
+def createprofil(request):
+    profils = Profils.objects.filter(archive=False)
+
+    context = {'profils': profils}
+
+    if request.method == 'POST':
+        form = ProfilsForm(request.POST)
+    else:
+        form = ProfilsForm()
+
+    return save_all(request, form, 'profil/ajouterprofil.html', 'profil',
+                    'profil/listeprofil.html', context)
+
+
+def updateprofil(request, id):
+    profils = Profils.objects.filter(archive=False)
+    mycontext = {
+        'profils': profils
+    }
+    profil = get_object_or_404(Profils, id=id)
+    if request.method == 'POST':
+        form = ProfilsForm(request.POST, instance=profil)
+    else:
+        form = ProfilsForm(instance=profil)
+    return save_all(request, form, 'profil/updateprofil.html', 'profil',
+                    'profil/listeprofil.html', mycontext)
+
+
+@login_required
+def deleteprofil(request, id):
+    data = dict()
+    profil = get_object_or_404(Profils, id=id)
+    if request.method == "POST":
+        profil.archive = True
+        profil.save()
+        data['form_is_valid'] = True
+        profils = Profils.objects.filter(archive=False)
+        data['profil'] = render_to_string('profil/listeprofil.html', {'profils': profils})
+    else:
+        context = {
+            'profil': profil,
+        }
+        data['html_form'] = render_to_string('profil/deleteprofil.html', context, request=request)
+
+    return JsonResponse(data)
+
+
+@login_required
+def droit(request):
+    droitprofil = "Droit"
+    droits = Droits.objects.filter(archive=False)
+    context = {
+        'droits': droits
+    }
+    return controllers(request, 'droit/droit.html', droitprofil, context)
+
+
+def createdroit(request):
+    droits = Droits.objects.filter(archive=False)
+
+    context = {'droits': droits}
+
+    if request.method == 'POST':
+        form = DroitsForm(request.POST)
+    else:
+        form = DroitsForm()
+
+    return save_all(request, form, 'droit/ajouterdroit.html', 'droit',
+                    'droit/listedroit.html', context)
+
+
+def updatedroit(request, id):
+    droits = Droits.objects.filter(archive=False)
+    mycontext = {
+        'droit': droits
+    }
+    droit = get_object_or_404(Droits, id=id)
+    if request.method == 'POST':
+        form = DroitsForm(request.POST, instance=droit)
+    else:
+        form = DroitsForm(instance=droit)
+    return save_all(request, form, 'droit/updatedroit.html', 'droit',
+                    'droit/listedroit.html', mycontext)
+
+
+@login_required
+def deletedroit(request, id):
+    data = dict()
+    droit = get_object_or_404(Droits, id=id)
+    if request.method == "POST":
+        droit.archive = True
+        droit.save()
+        data['form_is_valid'] = True
+        droits = Droits.objects.filter(archive=False)
+        data['droit'] = render_to_string('droit/listedroit.html', {'droits': droits})
+    else:
+        context = {
+            'droit': droit,
+        }
+        data['html_form'] = render_to_string('droit/deletedroit.html', context, request=request)
 
     return JsonResponse(data)

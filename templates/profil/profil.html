@@ -13,76 +13,51 @@
 
 {% block show-tombe %} show {% endblock %}
 
-{% block active-fichier %} active {% endblock %}
+{% block active-compte %} active {% endblock %}
 
 {% block content %}
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <div class=" mb-4">
-        <div class="col-lg-12 alert alert-secondary">
-            <h1 class="h5 mb-0 text-gray-800"><span style="color:#4e73df">Tableau de bord / </span>Fichier d'adressage des tombes du cimétière d'Aného actualisé</h1>
-        </div><br>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Rechercher des informations..." id="myInputTextField">
-            </div>
-        </div>
+    <h1 class="h3 mb-0 text-gray-800">Gestion des profils utilisateurs</h1><br>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <button type="button" data-url="{% url 'createprofil' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm show-form">
+            <i class="fas fa-plus"></i> Ajouter un profil
+        </button>
+        <a style="font-weight:700" href="{% url 'droit' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+             Vers droits &nbsp; <i class="fas fa-angle-right fa-sm text-bold text-white-50"></i>
+        </a>
     </div>
 
     <!-- Content Row -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card mb-4 py-3 border-bottom-primary">
-                <div class="card-header text-center"><small style="font-size:15px"><b>Fichier d'adressage des tombes du cimétière d'Aného actualisé</b></small></div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
-                                <th scope="col" width="20%">Nom du defunt</th>
-                                <th scope="col" width="10%">Divison</th>
-                                <th scope="col" width="10%">Cadastre</th>
-                                <th scope="col" width="10%">Emplacement</th>
-                                <th scope="col" width="10%">Naissance</th>
-                                <th scope="col" width="10%">Décès</th>
-                                <th scope="col" width="10%">Âge</th>
-                                <th scope="col" width="10%">Dimension</th>
-                                <th scope="col" width="10%">Observation</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Libelle du profil</th>
+                                <th scope="col">Date d'enrégistrement</th>
+                                <th scope="col">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for tombe in tombes %}
-                            <tr>
-                                <td width="20%" scope="row"><span class="">{{tombe.nom_defunt_tombe}}</span></td>
-                                <td width="10%" scope="row"><span class="badge badge-secondary">{{tombe.division}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.cadastre_tombe}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.emplacement_tombe}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.naissance_defunt_tombe}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.deces_defunt_tombe}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.age_defunt_tombe}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.dimension}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.observation}}</span></td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="9" style="text-align:center;font-weight:bold">Aucune donnée n'est disponible pour le moment</td>
-                            </tr>
-                            {% endfor %}
+                            {% include 'profil/listeprofil.html' %}
                             </tbody>
                         </table>
 
                         <!-- Popup ajouter nouvelle categorie -->
-                        <div class="modal fade" id="modal-observation">
+                        <div class="modal fade" id="modal-profil">
                             <div class="modal-dialog">
                                 <div class="modal-content"></div>
                             </div>
                         </div>
 
                     </div>
+
                 </div>
             </div>
         </div>
@@ -143,11 +118,5 @@
 
 <!-- Page level custom scripts -->
 <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
-<script src="{% static 'js/cimetiere/search.js' %}"></script>
-<script>
-    oTable = $('#dataTable').DataTable();
-    $('#myInputTextField').keyup(function(){
-          oTable.search($(this).val()).draw() ;
-    })
-</script>
+<script src="{% static 'js/cimetiere/profil.js' %}"></script>
 {% endblock %}

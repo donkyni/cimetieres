@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'django-insecure-(688qb8k6jij79be52ums%p_=lfur(x-1n(xp%ex2rtpyo7^x(
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -76,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tombes_cimetieres_aneho.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -90,7 +87,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -110,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -124,19 +119,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIR = (
-    BASE_DIR / 'static'
+        BASE_DIR / 'static'
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/fichier_static/'
 MEDIA_ROOT = (
-    BASE_DIR / 'fichier_static'
+        BASE_DIR / 'fichier_static'
 )
 
 # Default primary key field type
@@ -145,3 +139,6 @@ MEDIA_ROOT = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'cimetieres.User'
+
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_URL = 'login'

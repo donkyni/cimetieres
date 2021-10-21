@@ -6,10 +6,10 @@ $(document).ready(function(){
             type: 'get',
             dataType: 'json',
             beforeSend: function(){
-                $('#modal-observation').modal('show');
+                $('#modal-profil').modal('show');
             },
             success: function(data){
-                $('#modal-observation .modal-content').html(data.html_form);
+                $('#modal-profil .modal-content').html(data.html_form);
             }
         });
     };
@@ -22,10 +22,10 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(data) {
                 if(data.form_is_valid) {
-                    $('#dataTable tbody').html(data.observation);
-                    $('#modal-observation').modal('hide');
+                    $('#dataTable tbody').html(data.profil);
+                    $('#modal-profil').modal('hide');
                 } else {
-                    $('#modal-observation .modal-content').html(data.html_form)
+                    $('#modal-profil .modal-content').html(data.html_form)
                 }
             }
         })
@@ -34,14 +34,14 @@ $(document).ready(function(){
 
 // Create a form
 $(".show-form").click(ShowForm);
-$('#modal-observation').on("submit", ".create-form", SaveForm);
+$('#modal-profil').on("submit", ".create-form", SaveForm);
 
 // Update form
 $('#dataTable').on("click", ".show-form-update", ShowForm);
-$('#modal-observation').on("submit", ".update-form", SaveForm);
+$('#modal-profil').on("submit", ".update-form", SaveForm);
 
 // Delete form
 $('#dataTable').on("click", ".show-form-delete", ShowForm);
-$('#modal-observation').on("submit", ".delete-form", SaveForm);
+$('#modal-profil').on("submit", ".delete-form", SaveForm);
 
 });

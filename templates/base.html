@@ -97,7 +97,7 @@
                     <a class="collapse-item {% block active-moncompte %}{% endblock %}" href="{% url 'compte' %}">Mon compte</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Options supplémentaires:</h6>
-                    <a class="collapse-item {% block active-compte %}{% endblock %}" href="">Profils utilisateurs</a>
+                    <a class="collapse-item {% block active-compte %}{% endblock %}" href="{% url 'profil' %}">Profils utilisateurs</a>
                     <a class="collapse-item {% block active-utilisateurs %}{% endblock %}" href="{% url 'utilisateurs' %}">Tous les utilisateurs</a>
                 </div>
             </div>
@@ -373,15 +373,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Prêt à partir ?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-body">Sélectionner "Logout" ci-dessous si vous êtes prêt à mettre fin à votre session en cours.</div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
             </div>
         </div>
     </div>
