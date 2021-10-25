@@ -5,6 +5,9 @@
 {% block link %}
 <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block active-tombe %} active {% endblock %}
@@ -40,7 +43,7 @@
                 <div class="card-header text-center"><small style="font-size:15px"><b>Fichier d'adressage des tombes du cimétière d'Aného actualisé</b></small></div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <table style=" font-family: 'Oswald', sans-serif;" class="table table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
                                 <th scope="col" width="20%">Nom du defunt</th>
@@ -56,16 +59,42 @@
                             </thead>
                             <tbody>
                             {% for tombe in tombes %}
-                            <tr>
-                                <td width="20%" scope="row"><span class="">{{tombe.nom_defunt_tombe}}</span></td>
-                                <td width="10%" scope="row"><span class="badge badge-secondary">{{tombe.division}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.cadastre_tombe}}</span></td>
+                            <tr style="font-size:20px">
+                                <td width="20%" scope="row">
+                                    <span>
+                                        <a href="{% url 'detailtombe' tombe.id %}" style="text-decoration:none;color:#2c2c54;background-color:#70a1ff;border-radius:5px">
+                                            {% if tombe.nom_defunt_tombe == "_" or tombe.nom_defunt_tombe == " " %}
+                                            <i>Inconnue</i>
+                                            {% elif tombe.nom_defunt_tombe != "_"%}
+                                            {{tombe.nom_defunt_tombe}}
+                                            {% endif %}
+                                        </a>
+                                    </span>
+                                </td>
+                                <td width="10%" scope="row">
+                                    <span class="badge badge-secondary">
+                                    {% if tombe.division is None %}
+                                        <i>Inconnue</i>
+                                    {% elif tombe.division is not None %}
+                                        {{tombe.division}}
+                                    {% endif %}
+                                    </span>
+                                </td>
+                                <td width="10%" scope="row"><span class="badge badge-info">{{tombe.cadastre_tombe}}</span></td>
                                 <td width="10%" scope="row"><span class="">{{tombe.emplacement_tombe}}</span></td>
                                 <td width="10%" scope="row"><span class="">{{tombe.naissance_defunt_tombe}}</span></td>
                                 <td width="10%" scope="row"><span class="">{{tombe.deces_defunt_tombe}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.age_defunt_tombe}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.dimension}}</span></td>
-                                <td width="10%" scope="row"><span class="">{{tombe.observation}}</span></td>
+                                <td width="10%" scope="row">
+                                    <span class="badge badge-secondary">
+                                        {% if tombe.age_defunt_tombe == "_" %}
+                                        <i>Inconnue</i>
+                                        {% elif tombe.age_defunt_tombe != "_" %}
+                                        {{tombe.age_defunt_tombe}}
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                <td width="10%" scope="row"><span class="badge bg-primary" style="color:#fff">{{tombe.dimension}}</span></td>
+                                <td width="10%" scope="row"><span class="badge bg-warning">{{tombe.observation}}</span></td>
                             </tr>
                             {% empty %}
                             <tr>

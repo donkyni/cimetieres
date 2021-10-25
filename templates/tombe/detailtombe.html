@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block link %}
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+{% endblock %}
+
+{% block active-tombe %} active {% endblock %}
+
+{% block collapsed-tombe %} {% endblock %}
+
+{% block show-tombe %} show {% endblock %}
+
+{% block active-fichier %} active {% endblock %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class=" mb-4">
+        <div class="col-lg-12 alert alert-secondary">
+            <h1 class="h5 mb-0 text-gray-800"><span style="color:#4e73df">Tableau de bord / </span>Fichier d'adressage des tombes du cimétière d'Aného actualisé / {{detail_tombe.nom_defunt_tombe}}</h1>
+        </div><br>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+
+            <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                    <div class="text-center">
+                        <img style="height:100px;width:100px;" src="https://images.unsplash.com/photo-1595282612591-2425f66a43ad?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80, background-size:cover" class="profile-user-img img-fluid img-circle" alt="User picture"/>
+                    </div>
+                    <br>
+                    <h5 class="profile-username text-center" style="font-weight:bold">{{detail_tombe.nom_defunt_tombe}}</h5><br>
+                    <!-- Sidebar - Brand -->
+                    <a class=" btn btn-primary btn-blocksidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dashboard' %}">
+                        <div class="sidebar-brand-icon rotate-n-15">
+                            <i class="fas fa-laugh-wink"></i>
+                        </div>
+                        <div class="sidebar-brand-text mx-3">T.C. <sup>Aného</sup></div>
+                    </a>
+                </div>
+            </div>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h5 class="card-title">Informations supplémentaires</h5>
+                </div>
+                <div class="card-body">
+                    <strong><i class="far fa-user mr-1"></i> Division</strong>
+
+                    <p class="text-muted">
+                        {% if tombe.division is None %}
+                        Inconnue
+                        {% elif tombe.division is not None %}
+                        {{detail_tombe.division}}
+                        {% endif %}
+                    </p>
+
+                    <hr>
+
+                    <strong><i class="fas fa-phone mr-1"></i> Cadastre</strong>
+
+                    <p class="text-muted">{{detail_tombe.cadastre_tombe}}</p>
+
+                    <hr>
+
+                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Emplacement</strong>
+
+                    <p class="text-muted">{{detail_tombe.emplacement_tombe}}</p>
+
+                    <hr>
+
+                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Née le</strong>
+
+                    <p class="text-muted">{{detail_tombe.naissance_defunt_tombe}}</p>
+
+                    <hr>
+
+                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Décédé le</strong>
+
+                    <p class="text-muted">{{detail_tombe.deces_defunt_tombe}}</p>
+
+                    <hr>
+
+                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Age</strong>
+
+                    <p class="text-muted">
+                        {% if tombe.age_defunt_tombe == "_" %}
+                        Non précisé
+                        {% elif tombe.age_defunt_tombe != "_" %}
+                        {{detail_tombe.age_defunt_tombe}}
+                        {% endif %}
+                    </p>
+
+                    <hr>
+
+                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Dimension</strong>
+
+                    <p class="text-muted">{{detail_tombe.dimension}}</p>
+
+                    <hr>
+
+                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Observations</strong>
+
+                    <p class="text-muted">{{detail_tombe.observation}}</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 col-12">
+            <a style="font-weight:700" href="{% url 'fichier' %}" class=" btn btn-sm btn-block btn-dark shadow-sm">
+                retour fichier &nbsp; <i class="fas fa-angle-right fa-sm text-bold text-white-50"></i>
+            </a>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <br>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

@@ -5,7 +5,6 @@ from cimetieres import views
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
-    url(r'^dashboard$', views.dashboard, name='dashboard'),
     url(r'^division$', views.division, name='division'),
     url(r'^ajouterdivision$', views.ajouterdivision, name='ajouterdivision'),
     url(r'^(?P<id>\d+)/modifierdivision$', views.modifierdivision, name="modifierdivision"),
@@ -34,4 +33,5 @@ urlpatterns = [
     url(r'^createdroit', views.createdroit, name='createdroit'),
     url(r'^(?P<id>\d+)/updatedroit', views.updatedroit, name="updatedroit"),
     url(r'^(?P<id>\d+)/deletedroit', views.deletedroit, name="deletedroit"),
+    url(r'^(?P<id>\d+)/detail-tombe-selectionner', views.detailtombe, name='detailtombe'),
 ]

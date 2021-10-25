@@ -261,8 +261,6 @@ def supprimerobservation(request, id):
 
 @login_required
 def ligne(request):
-    droitprofil = "Tombe"
-
     if request.method == 'POST':
         form = TombeForm(request.POST)
         if form.is_valid():
@@ -271,6 +269,9 @@ def ligne(request):
     else:
         form = TombeForm()
     current_date = datetime.now()
+
+    droitprofil = "Tombe"
+
     context = {
         'form': form
     }
@@ -494,3 +495,12 @@ def deletedroit(request, id):
         data['html_form'] = render_to_string('droit/deletedroit.html', context, request=request)
 
     return JsonResponse(data)
+
+
+@login_required
+def detailtombe(request, id):
+    detail_tombe = get_object_or_404(Tombe, id=id)
+    context = {
+        'detail_tombe': detail_tombe
+    }
+    return render(request, 'tombe/detailtombe.html', context)
